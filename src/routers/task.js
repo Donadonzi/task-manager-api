@@ -21,8 +21,7 @@ router.post('/tasks', auth, async (req, res) => {
 //*** /tasks?sortBy=createdAt:desc
 router.get('/tasks', auth, async (req, res) => {
 	try {
-		// const tasks = await Task.find({ owner: req.user._id }); This works as well, it has to be modifed for receiving completed in query though
-
+		
 		const match = {};
 		const sort = {};
 
@@ -73,9 +72,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 		return res.status(400).send({ error: 'Invalid update!' });
 	}
 	try {
-		// Refactored this to be able to use middlewares
-		// const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-
+		
 		const task = await Task.findOne({ _id: req.params.id, owner: req.user._id });
 		if (!task) {
 			return res.status(404).send();

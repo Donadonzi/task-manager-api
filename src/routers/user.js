@@ -65,32 +65,7 @@ router.get('/users/me', auth, async (req, res) => {
 
 	res.send(req.user);
 
-	// We don't need this anymore cuz we are using that auth middleware, and it stores
-	// the fetched user in request body
-	// try {
-	// 	const users = await User.find({});
-	// 	res.send(users);
-	// } catch (e) {
-	// 	res.status(500).send();
-	// }
 });
-
-
-// Removed this after changing the route for user profile as  /users/me
-// So we don't need this anymore and we don't want /users/:id route to do anything
-
-// router.get('/users/:id', async (req, res) => {
-// 	const _id = req.params.id;
-// 	try {
-// 		const user = await User.findById(_id);
-// 		if (!user) {
-// 			return res.status(404).send('User not found');
-// 		}
-// 		res.send(user);
-// 	} catch (e) {
-// 		res.status(500).send();
-// 	}
-// });
 
 
 ///////////////// UPDATE /////////////////
@@ -119,12 +94,6 @@ router.patch('/users/me', auth, async (req, res) => {
 ///////////////// DELETE /////////////////
 router.delete('/users/me', auth, async (req, res) => {
 	try {
-		// Replaced the code below with .remove() mongoose method,
-		// and since we are using auth we already know that there is an authenticated user if this code is running
-		// const user = await User.findByIdAndDelete(req.user._id);
-		// if (!user) {
-		// 	return res.status(404).send();
-		// }
 		await req.user.remove();
 		sendUserDeleteEmail(req.user.email, req.user.name);
 		res.send(req.user);
@@ -136,7 +105,7 @@ router.delete('/users/me', auth, async (req, res) => {
 
 ///////////////// UPLOAD PROFILE PICTURE /////////////////
 const upload = multer({
-	// dest: 'avatars',     Removed this later, so that it doesn't get saved on the file system and be saved in user profile
+	
 	limits: {
 		fileSize: 1000000
 	},

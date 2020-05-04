@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
 	}
 },
 	{
-		timestamps: true   // to keep records of time of creation and modification on documents
+		timestamps: true
 	});
 
 userSchema.virtual('tasks', {
@@ -76,7 +76,7 @@ userSchema.methods.toJSON = function () {
 
 
 /////// A method for getting a token /////////
-userSchema.methods.generateAuthToken = async function () { // Shouldn't use arrow function for 'this' bingind stuff
+userSchema.methods.generateAuthToken = async function () {
 	const user = this;
 	const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
 	user.tokens = user.tokens.concat({ token });
@@ -105,7 +105,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 
 /////// A middleware for hashing the plain text password before saving ///////// 
-userSchema.pre('save', async function (next) {   // Shouldn't use arrow function for 'this' bingind stuff
+userSchema.pre('save', async function (next) {
 	const user = this;
 	if (user.isModified('password')) {
 		user.password = await bcrypt.hash(user.password, 8);
@@ -122,21 +122,7 @@ userSchema.pre('remove', async function (next) {
 
 
 /////// Making the model /////////
-/////// THIS HAS TO BE STATED HERE AT THE BOTTOM AFTER THOSE CODE ABOVE or the app won't work properly.
-/////// It drove me crazy till I found out what the hell was wrong!! /////////
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
 
-
-
-// raveshe avalie ke we used.
-// Masalan intori user jadid misazim ba estefade az model.
-// const don = new User({
-// 	name: '   Shadi     ', email: '  shadi@GMAIL.COM', password: '  khar '
-// });
-// don.save().then(don => {
-// 	console.log(don);
-// }).catch(error => {
-// 	console.log(error);
-// });
