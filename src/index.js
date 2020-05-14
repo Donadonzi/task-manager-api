@@ -9,7 +9,7 @@ const taskRouter = require('./routers/task');
 const app = express();
 const port = process.env.PORT;
 
-const publicDirectory = path.join(__dirname, '../public');
+const publicDirectory = path.join(__dirname, '../client/public');
 app.use(express.static(publicDirectory));
 
 
@@ -19,7 +19,7 @@ app.use(taskRouter);
 
 
 app.listen(port, () => {
-	console.log('Yallah! Server umad bala roo port ' + port);
+	console.log('Server umad bala roo port ' + port);
 });
 
 
