@@ -4,9 +4,9 @@ class Login extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className="ui raised very padded text container segment">
+				{/* <div className="ui raised very padded text container segment">
 					<h2 className="ui header animated slow bounceInDown">Front-end Under Construction...</h2>
-				</div>
+				</div> */}
 
 				<div className="ui middle aligned center aligned grid">
 					<div className="column">
