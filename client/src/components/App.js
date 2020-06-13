@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import Landing from './Landing';
-import Login from './Login';
+import Landing from './Landing.js';
+import Login from './Login.js';
 import Dashboard from './Dashboard';
 
 class App extends React.Component {
