@@ -37,5 +37,5 @@
 		"env-cmd": "^10.1.0",
 		"nodemon": "^2.0.3"
 	},
-	"homepage": "."
+	"homepage": "http://donz-task-manager.herokuapp.com"
 }
