@@ -11,7 +11,15 @@ class Login extends React.Component {
 	login() {
 		const email = this.emailRef.current.value;
 		const password = this.passwordRef.current.value;
-		axios.post('/users', { email, password });
+		const name = 'Khareddin';
+		axios
+			.post('/users', { email, password, name })
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 	}
 	render() {
 		return (
