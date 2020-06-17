@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import FormDialog from './signUpModal';
+
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -11,15 +13,18 @@ class Login extends React.Component {
 	login() {
 		const email = this.emailRef.current.value;
 		const password = this.passwordRef.current.value;
-		const name = 'Khareddin';
 		axios
-			.post('/users', { email, password, name })
+			.post('/users/login', { email, password })
 			.then(function (response) {
 				console.log(response);
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
+	}
+
+	signUp() {
+		return <FormDialog />;
 	}
 	render() {
 		return (
@@ -54,7 +59,7 @@ class Login extends React.Component {
 									</div>
 								</div>
 								<a
-									href="/users/me"
+									href="/dashboard"
 									onClick={() => this.login()}
 									className="ui fluid large teal submit button">
 									Login
@@ -64,9 +69,10 @@ class Login extends React.Component {
 						</form>
 						<div className="ui message">
 							New to us?{' '}
-							<a href="/users" id="testModal">
+							{/* <a href="#" id="testModal" onClick={() => this.signUp()}>
 								Sign Up
-							</a>
+							</a> */}
+							<FormDialog />
 						</div>
 					</div>
 				</div>
