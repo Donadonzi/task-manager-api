@@ -14,7 +14,13 @@ class FormDialog extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { open: false, name: '', email: '', password: '' };
+		this.state = {
+			open: false,
+			name: '',
+			email: '',
+			password: '',
+			showError: false
+		};
 	}
 
 	handleToggle = () => {
@@ -25,10 +31,24 @@ class FormDialog extends React.Component {
 		this.setState({ [item]: e.target.value });
 	};
 
-	async handleSignUp() {
-		this.setState({ open: false });
+	handleSignUp(e) {
+		e.preventDefault();
+
+		if (!validateEmail(this.state.email)) {
+			this.setState({ showError: true });
+			console.log(this.state.showError);
+		}
+
+		
+		// if (!this.state.showError) {
+			
+		// 	this.sendRequest();
+		// }
+	}
+
+	async sendRequest() {
 		const { name, email, password } = this.state;
-		validateEmail(email);
+		this.setState({ open: false });
 		const response = await axios.post('/users', { name, email, password });
 		console.log(response);
 	}
@@ -50,7 +70,7 @@ class FormDialog extends React.Component {
 							To create an account on Task Manager, please fill in the required
 							fields below:
 						</DialogContentText>
-						<form onSubmit={this.handleSignUp}>
+						<form onSubmit={(e) => this.handleSignUp(e)}>
 							<TextField
 								required
 								autoFocus
@@ -61,16 +81,29 @@ class FormDialog extends React.Component {
 								fullWidth
 								onChange={(e) => this.handleChange(e, 'name')}
 							/>
-							<TextField
-								required
-								autoFocus
-								margin="dense"
-								id="email"
-								label="Email Address"
-								type="email"
-								fullWidth
-								onChange={(e) => this.handleChange(e, 'email')}
-							/>
+
+							{this.state.showError ? (
+								<div>
+									<TextField
+										error
+										id="standard-error-helper-text"
+										defaultValue={this.state.email}
+										helperText="Invalid email"
+									/>
+								</div>
+							) : (
+								<TextField
+									required
+									autoFocus
+									margin="dense"
+									id="email"
+									label="Email Address"
+									type="email"
+									fullWidth
+									onChange={(e) => this.handleChange(e, 'email')}
+								/>
+							)}
+
 							<TextField
 								required
 								autoFocus
