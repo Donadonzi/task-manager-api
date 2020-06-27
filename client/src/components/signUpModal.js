@@ -19,7 +19,8 @@ class FormDialog extends React.Component {
 			name: '',
 			email: '',
 			password: '',
-			showError: false
+			errorEmail: false,
+			errorPassword: false,
 		};
 	}
 
@@ -34,23 +35,25 @@ class FormDialog extends React.Component {
 	handleSignUp(e) {
 		e.preventDefault();
 
-		if (!validateEmail(this.state.email)) {
-			this.setState({ showError: true });
-			console.log(this.state.showError);
+		if (!this.state.errorEmail && !this.state.errorPassword) {
+			this.sendRequest();
 		}
-
-		
-		// if (!this.state.showError) {
-			
-		// 	this.sendRequest();
-		// }
 	}
 
 	async sendRequest() {
 		const { name, email, password } = this.state;
-		this.setState({ open: false });
-		const response = await axios.post('/users', { name, email, password });
-		console.log(response);
+		try {
+			const response = await axios.post('/users', { name, email, password });
+			this.setState({ open: false });
+		} catch (e) {
+			const errors = e.response.data.errors;
+			if (errors.email) {
+				this.setState({ errorEmail: true });
+			}
+			if (errors.password) {
+				this.setState({ errorPassword: true });
+			}
+		}
 	}
 
 	render() {
@@ -82,7 +85,7 @@ class FormDialog extends React.Component {
 								onChange={(e) => this.handleChange(e, 'name')}
 							/>
 
-							{this.state.showError ? (
+							{this.state.errorEmail ? (
 								<div>
 									<TextField
 										error
@@ -104,16 +107,26 @@ class FormDialog extends React.Component {
 								/>
 							)}
 
-							<TextField
-								required
-								autoFocus
-								margin="dense"
-								id="password"
-								label="Password"
-								type="password"
-								fullWidth
-								onChange={(e) => this.handleChange(e, 'password')}
-							/>
+							{this.state.errorPassword ? (
+								<div>
+									<TextField
+										error
+										id="standard-error-helper-text"
+										helperText="Password must be at least 6 chars"
+									/>
+								</div>
+							) : (
+								<TextField
+									required
+									autoFocus
+									margin="dense"
+									id="password"
+									label="Password"
+									type="password"
+									fullWidth
+									onChange={(e) => this.handleChange(e, 'password')}
+								/>
+							)}
 						</form>
 					</DialogContent>
 					<DialogActions>
